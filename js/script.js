@@ -8,7 +8,7 @@ function commission(a, b, c, d, e, f){
   let n = a+b+c+d+e+f;
   let ret = -1;
 
-  if(0<n && n<=25){
+  if(1<=n && n<=25){
     ret = 110;
   }else if(n<=50){
     ret = 220;
@@ -18,32 +18,6 @@ function commission(a, b, c, d, e, f){
   return ret;
 }
 
-/*
-function deposit(a, b, c, d, e, f){
-  let s = sum(a, b, c, d, e, f);
-  let n = a+b+c+d+e+f;
-  let com = 0;
-  let ret;
-
-  if(s<0) return -1;
-  if(a<0 || b<0 || c<0 || d<0 || e<0 || f<0) return -1;
-
-  if(0<=n && n<=25){
-    com = 110;
-  }else if(n<=50){
-    com = 220;
-  }else if(n<=100){
-    com = 330;
-  }else{
-    return -1;
-  }
-
-  ret = s - com;
-  if(ret>0) return ret;
-
-  return -1;
-}
-*/
 
 function per(a, b, c, d, e, f, _s, _cms){
   if(_s<=0 || _cms<0) return -1;
@@ -54,7 +28,9 @@ function per(a, b, c, d, e, f, _s, _cms){
 function result(A){
   let idarr = ['result-1', 'result-5', 'result-10', 'result-50', 'result-100', 'result-500', 'result-input', 'result-deposit', 'result-per'];
 
-  for(let i=0; i<9; i++) document.getElementById(idarr[i]).innerHTML = String(A[i]);
+  for(let i=0; i<8; i++) document.getElementById(idarr[i]).innerHTML = String(A[i]);
+
+  document.getElementById(idarr[8]).innerHTML = String(A[8].toFixed(5));
 }
 
 
@@ -98,12 +74,12 @@ function main(){
   let minper = 105.0;
   let arr = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
 
-  for(let ai=0; ai<=Math.min(a, 100); ai++){
-    for(let bi=0; bi<=Math.min(b, Math.max(0, 100-ai)); bi++){
-      for(let ci=0; ci<=Math.min(c, Math.max(0, 100-ai-bi)); ci++){
-        for(let di=0; di<=Math.min(d, Math.max(0, 100-ai-bi-ci)); di++){
-          for(let ei=0; ei<=Math.min(e, Math.max(0, 100-ai-bi-ci-di)); ei++){
-            for(let fi=0; fi<=Math.min(f, Math.max(0, 100-ai-bi-ci-di-ei)); fi++){
+  for(let ai=Math.min(a, 100); ai>=0; ai--){
+    for(let bi=Math.min(b, 100-ai); bi>=0; bi--){
+      for(let ci=Math.min(c, Math.max(0, 100-ai-bi)); ci>=0; ci--){
+        for(let di=Math.min(d, Math.max(0, 100-ai-bi-ci)); di>=0; di--){
+          for(let ei=Math.min(e, Math.max(0, 100-ai-bi-ci-di)); ei>=0; ei--){
+            for(let fi=Math.min(f, Math.max(0, 100-ai-bi-ci-di-ei)); fi>=0; fi--){
               status(1);
               let s = sum(ai, bi, ci, di, ei, fi);
               let cms = commission(ai, bi, ci, di, ei, fi);
