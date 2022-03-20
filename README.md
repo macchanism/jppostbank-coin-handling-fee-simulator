@@ -1,12 +1,14 @@
-# jppostbank-coin-handling-fee-simulator
+# jpbank-coin-handling-fee-simulator
 
 所持している硬貨をゆうちょATMに預け入れる時に、差し引かれる硬貨預払料金の割合を最小化するためのツール
 
 ## Usage
-Webブラウザで [JPPostBank CoinHandlingFee Simulator](https://jppostbank-coin-handling-fee-simulator.matchaism.net) にアクセス
+Webブラウザで [JapanPostBank CoinHandlingFee Simulator](https://jp-bank-coin-handling-fee-sim.matchaism.net) にアクセス
 1. 硬貨の所持枚数を入力
 2. `Run to simulate`で計算を実行
 3. 計算結果(硬貨預払料金の割合を最小化する投入枚数の組み合わせ)が出力される
+
+計算は端末のWebブラウザ上で実行されるので、過負荷などに注意
 
 ## Requirement
   - PC, スマートフォン
