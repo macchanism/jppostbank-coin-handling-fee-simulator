@@ -74,13 +74,13 @@ function main(){
   let minper = 105.0;
   let arr = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
 
+  status(1);
   for(let ai=Math.min(a, 100); ai>=0; ai--){
     for(let bi=Math.min(b, 100-ai); bi>=0; bi--){
       for(let ci=Math.min(c, Math.max(0, 100-ai-bi)); ci>=0; ci--){
         for(let di=Math.min(d, Math.max(0, 100-ai-bi-ci)); di>=0; di--){
           for(let ei=Math.min(e, Math.max(0, 100-ai-bi-ci-di)); ei>=0; ei--){
             for(let fi=Math.min(f, Math.max(0, 100-ai-bi-ci-di-ei)); fi>=0; fi--){
-              status(1);
               let s = sum(ai, bi, ci, di, ei, fi);
               let cms = commission(ai, bi, ci, di, ei, fi);
               let p = per(ai, bi, ci, di, ei, fi, s, cms);
