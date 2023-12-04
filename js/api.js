@@ -1,66 +1,98 @@
-function result(A){
-    let idarr = ['result-1', 'result-5', 'result-10', 'result-50', 'result-100', 'result-500', 'result-input', 'result-deposit', 'result-per'];
+// ATM硬貨預払い手数料のシミュレーション
 
-    for(let i=0; i<8; i++) document.getElementById(idarr[i]).innerHTML = String(A[i]);
+// script.jsからの変更点:
+// - main関数でAPIに対して非同期リクエスト(fetch)を送信し、その結果を処理
+// - エラーハンドリングが改善され、HTTPエラーが発生した場合やAPIから返されたデータがエラーを示す場合にエラーメッセージがコンソールに表示
 
-    document.getElementById(idarr[8]).innerHTML = String(A[8].substring(0, 5));
-}
-  
-  
-function result_error() {
-    let idarr = ['result-1', 'result-5', 'result-10', 'result-50', 'result-100', 'result-500', 'result-input', 'result-deposit', 'result-per'];
+// シミュレーションの結果をHTMLページに表示します。特定のHTML要素に計算結果を表示します。小数点以下5桁まで表示されるように設定されています。
+function result(A) {
+  let idArray = [
+    'result-1', 'result-5', 'result-10', 'result-50', 'result-100', 'result-500', 'result-input', 'result-deposit', 'result-per'
+ ];
 
-    for(let i=0; i<9; i++) document.getElementById(idarr[i]).innerHTML = '-';
-}
+	for (let i = 0; i < 8; i++) {
+		document.getElementById(idArray[i]).innerHTML = String(A[i]);
+	}
 
-
-function status(mode){
-    let nowlog = '';
-    let element = document.getElementById('log');
-
-    switch(mode){
-        case 0:
-        nowlog = '正常'; break;
-        case 1:
-        nowlog = '計算中...'; break;
-        case 2:
-        nowlog = '終了'; break;
-        case -1:
-        nowlog = 'エラー';
-        result_error();
-        break;
-        default:
-        nowlog = '待機中'; break;
-    }
-    element.innerHTML = '<p>'+nowlog+'</p>';
+	document.getElementById(idArray[8]).innerHTML = String(A[8].toFixed(5));
 }
 
-function main(){
-    const url = 'http://160.251.12.126:5000/api'
-    let a = document.getElementById('1yen').value;
-    let b = document.getElementById('5yen').value;
-    let c = document.getElementById('10yen').value;
-    let d = document.getElementById('50yen').value;
-    let e = document.getElementById('100yen').value;
-    let f = document.getElementById('500yen').value;
-    let arr = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
+// エラーが発生した場合に呼び出され、計算結果の表示をすべて'-'に設定します。
+function resultError() {
+	let idArray = [
+		'result-1', 'result-5', 'result-10', 'result-50', 'result-100', 'result-500', 'result-input', 'result-deposit', 'result-per'
+	];
 
-    const request = new XMLHttpRequest();
-    request.open('POST', url);
-    request.setRequestHeader("Content-Type", "application/json");
-    request.send(JSON.stringify({"1":a, "5":b, "10":c, "50":d, "100":e, "500":f}));
-    request.addEventListener('load', function(){
-        arr = this.responseText.split(",");
-        arr[0] = arr[0].slice(1); arr[8] = arr[8].slice(0,-1);
+	for (let i = 0; i < 9; i++) {
+		document.getElementById(idArray[i]).innerHTML = '-';
+	}
+}
 
-        if(arr[0]<0){
-            status(-1);
-            return -1;
-        }
-    
-        result(arr)
-        status(2);
-        return 0;
+// ページに計算のステータスを表示します。異なるモードに応じて、「正常」、「計算中」、「終了」、「エラー」、「待機中」のいずれかのステータスを表示します。
+function status(mode) {
+	let nowLog = '';
+	let element = document.getElementById('log');
+
+	switch (mode) {
+		case 0:
+			nowLog = '正常';
+			break;
+		case 1:
+			nowLog = '計算中...';
+			break;
+		case 2:
+			nowLog = '終了';
+			break;
+		case -1:
+			nowLog = 'エラー';
+			resultError();
+			break;
+		default:
+			nowLog = '待機中';
+			break;
+	}
+	element.innerHTML = '<p>' + nowLog + '</p>';
+}
+
+// フォームから入力された硬貨の数量に基づいて、APIを使用して最適な組み合わせを見つけ、結果を表示します。結果が正常でない場合、エラーステータスを表示します。
+async function main() {
+  //const url = 'http://160.251.12.126:5000/api';
+  const url = 'http://localhost:5000/api';
+  const coinValues = {
+    '1': parseInt(document.getElementById('1yen').value),
+    '5': parseInt(document.getElementById('5yen').value),
+    '10': parseInt(document.getElementById('10yen').value),
+    '50': parseInt(document.getElementById('50yen').value),
+    '100': parseInt(document.getElementById('100yen').value),
+    '500': parseInt(document.getElementById('500yen').value)
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(coinValues)
     });
 
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const arr = await response.json();
+
+    if (arr[0] < 0) {
+      status(-1);
+      return -1;
+    }
+
+    result(arr);
+    status(2);
+    return 0;
+  } catch (error) {
+    console.error('Error during fetch operation:', error);
+    status(-1);
+    return -1;
+  }
 }
