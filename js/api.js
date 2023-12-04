@@ -56,8 +56,8 @@ function status(mode) {
 
 // フォームから入力された硬貨の数量に基づいて、APIを使用して最適な組み合わせを見つけ、結果を表示します。結果が正常でない場合、エラーステータスを表示します。
 async function main() {
-  //const url = 'http://160.251.12.126:5000/api';
-  const url = 'http://localhost:5000/api';
+  const url = 'http://<IP addr.>:<Port num.>/api';
+  //const url = 'http://localhost:5000/api';
   const coinValues = {
     '1': parseInt(document.getElementById('1yen').value),
     '5': parseInt(document.getElementById('5yen').value),

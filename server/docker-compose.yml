@@ -8,4 +8,4 @@ services:
     container_name: 'jpbank-coin-handling-fee-simulator-api-server'
     tty: true
     volumes:
-      - .:/root
+      - .:/app

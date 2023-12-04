@@ -10,12 +10,16 @@ Webブラウザで [JapanPostBank CoinHandlingFee Simulator](https://jp-bank-coi
 
 計算は端末のWebブラウザ上で実行されるので、過負荷などに注意
 
+**負荷対策のため，計算をAPIサーバに任せてHTTPリクエストでやり取りするようにした．(悪用厳禁)**
+
+APIサーバは予告なく止めることがある．API ver.が使えないときは従来のレガシー ver.を利用すること．
+
 ## Requirement
-  - PC, スマートフォン
+  - PC，スマートフォン，タブレットなど
   - Webブラウザ
-    - Chrome, Firefox, Safari
+    - Chrome, Firefox, Safariなど
     - HTML5に対応していること
-    - JavaScript: ON (required)
+    - JavaScript: ON (optional)
 
 ## Dependency
   - [jQuery](https://jquery.com/)
@@ -24,6 +28,18 @@ Webブラウザで [JapanPostBank CoinHandlingFee Simulator](https://jp-bank-coi
   - [Bootstrap](https://getbootstrap.com/)
     - version 4.6.1
     - [CDN](https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css)
+
+## Deploy
+`js/api.js`の編集(59行目): APIリクエストの送信先の設定
+```javascript
+const url = 'http://<IP addr.>:<Port num.>/api';
+```
+
+APIサーバの起動
+```bash
+cd server
+docker compose up -d --build
+```
 
 ## License
 MIT License
