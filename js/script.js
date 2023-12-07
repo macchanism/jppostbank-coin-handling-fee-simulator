@@ -1,51 +1,95 @@
 // ATM硬貨預払い手数料のシミュレーション
+const coinValues = [1, 5, 10, 50, 100, 500];
 
-// 入力された硬貨の数量に基づいて総額を計算します。もし硬貨の数量が負の値であれば、エラーとして-1を返します。
-function sum(a, b, c, d, e, f) {
-  if (a < 0 || b < 0 || c < 0 || d < 0 || e < 0 || f < 0) {
-    return -1;
+// 各硬貨の手数料を計算する関数
+function calculateFee(combination) {
+  // 合計硬貨枚数を計算
+  const totalCoins = combination.reduce((acc, val) => acc + val, 0);
+
+  // 手数料の計算
+  if (1 <= totalCoins && totalCoins <= 25) {
+    return 110;
+  } else if (26 <= totalCoins && totalCoins <= 50) {
+    return 220;
+  } else if (51 <= totalCoins && totalCoins <= 100) {
+    return 330;
+  } else {
+    throw new Error("Invalid total coins"); // 100枚を超える場合はエラーを発生させる
   }
-  return a + 5 * b + 10 * c + 50 * d + 100 * e + 500 * f;
 }
 
-// 入力された硬貨の数量に基づいて、硬貨預払料金を計算します。合計硬貨の数量によって異なる手数料が適用されます。計算結果が-1の場合、エラーとして返します。
-function commission(a, b, c, d, e, f) {
-  let totalCoins = a + b + c + d + e + f;
-  let ret = -1;
-
-  if (totalCoins >= 1 && totalCoins <= 25) {
-    ret = 110;
-  } else if (totalCoins <= 50) {
-    ret = 220;
-  } else if (totalCoins <= 100) {
-    ret = 330;
+// 組み合わせを生成するヘルパー関数
+function generateCombinationsHelper(query, index, current, result) {
+  if (index === query.length) {
+    result.push([...current]);
+    return;
   }
-  return ret;
+
+  // 各硬貨の組み合わせを再帰的に生成
+  for (let i = 0; i <= query[index]; i++) {
+    current[index] = i;
+    generateCombinationsHelper(query, index + 1, current, result);
+  }
 }
 
-// 入力された硬貨の数量に基づいて、ATM硬貨預払料金の割合を計算します。もし計算結果が負の値であれば、エラーとして-1を返します。
-function per(a, b, c, d, e, f, totalCost, totalCommission) {
-  if (totalCost <= 0 || totalCommission < 0) {
-    return -1;
+// 組み合わせを生成する関数
+function generateCombinations(query) {
+  const result = [];
+  generateCombinationsHelper(query, 0, [], result);
+  return result;
+}
+
+// 最適な硬貨の組み合わせを見つける関数
+function findOptimalCombination(query) {
+  let bestCombination = null;
+  let minFeeRatio = Infinity;
+  let maxTotalCoins = 0;
+
+  // 各硬貨の組み合わせを試す
+  const combinations = generateCombinations(query);
+  for (const combination of combinations) {
+    const totalCoins = combination.reduce((acc, val) => acc + val, 0);
+
+    try {
+      const fee = calculateFee(combination);
+
+      const totalValue = combination.reduce((acc, val, index) => acc + val * coinValues[index], 0);
+      const feeRatio = fee / totalValue;
+
+      // 手数料の割合が最小の場合または手数料の割合が同じで合計枚数が最大の場合を更新
+      if (feeRatio < minFeeRatio || (feeRatio === minFeeRatio && maxTotalCoins < totalCoins && totalCoins <= 100)) {
+        minFeeRatio = feeRatio;
+        bestCombination = combination;
+        maxTotalCoins = totalCoins;
+      }
+    } catch (error) {
+      // エラーが発生した場合はスキップ
+      continue;
+    }
   }
-  return (100.0 * totalCommission) / totalCost;
+
+  return [bestCombination, minFeeRatio];
 }
 
 // シミュレーションの結果をHTMLページに表示します。特定のHTML要素に計算結果を表示します。小数点以下5桁まで表示されるように設定されています。
-function result(A) {
+function result(resultArray) {
+  // 結果を表示するHTML要素のID
   let idArray = [
     'result-1', 'result-5', 'result-10', 'result-50', 'result-100', 'result-500', 'result-input', 'result-deposit', 'result-per'
   ];
 
+  // 結果をHTMLに表示
   for (let i = 0; i < 8; i++) {
-    document.getElementById(idArray[i]).innerHTML = String(A[i]);
+    document.getElementById(idArray[i]).innerHTML = String(resultArray[i]);
   }
 
-  document.getElementById(idArray[8]).innerHTML = String(A[8].toFixed(5));
+  // 小数点以下5桁まで表示
+  document.getElementById(idArray[8]).innerHTML = String(resultArray[8].toFixed(5));
 }
 
 // エラーが発生した場合に呼び出され、計算結果の表示をすべて'-'に設定します。
 function resultError() {
+  // エラー時に表示をクリア
   let idArray = [
     'result-1', 'result-5', 'result-10', 'result-50', 'result-100', 'result-500', 'result-input', 'result-deposit', 'result-per'
   ];
@@ -56,35 +100,40 @@ function resultError() {
 }
 
 // ページに計算のステータスを表示します。異なるモードに応じて「正常」、「計算中」、「終了」、「エラー」、「待機中」のいずれかのステータスを表示します。
-function status(mode) {
-	let nowLog = '';
-	let element = document.getElementById('log');
+function displayStatusOnWebPage(mode) {
+  // ステータスを表示するHTML要素
+  let nowLog = '';
+  let element = document.getElementById('log');
 
-	switch (mode) {
-		case 0:
-			nowLog = '正常';
-			break;
-		case 1:
-			nowLog = '計算中...';
-			break;
-		case 2:
-			nowLog = '終了';
-			break;
-		case -1:
-			nowLog = 'エラー';
-			resultError();
-			break;
-		default:
-			nowLog = '待機中';
-			break;
-	}
-	element.innerHTML = '<p>' + nowLog + '</p>';
+  // モードに応じてステータスを設定
+  switch (mode) {
+    case 0:
+      nowLog = '正常';
+      break;
+    case 1:
+      nowLog = '計算中...';
+      break;
+    case 2:
+      nowLog = '終了';
+      break;
+    case -1:
+      nowLog = 'エラー';
+      resultError();
+      break;
+    default:
+      nowLog = '待機中';
+      break;
+  }
+
+  // ステータスをHTMLに表示
+  element.innerHTML = '<p>' + nowLog + '</p>';
 }
 
 // フォームから入力された硬貨の数量に基づいて、最適な組み合わせを見つけ、結果を表示します。結果が正常でない場合、エラーステータスを表示します。
 function main() {
   const getInputValue = (id) => parseInt(document.getElementById(id).value);
-  
+
+  // フォームから入力された硬貨の数量を取得
   let a = getInputValue('1yen');
   let b = getInputValue('5yen');
   let c = getInputValue('10yen');
@@ -92,40 +141,44 @@ function main() {
   let e = getInputValue('100yen');
   let f = getInputValue('500yen');
 
-  let minPer = 105.0;
-  let arr = Array(9).fill(-1);
+  // 計算中のステータスを表示
+  displayStatusOnWebPage(1);
 
-  status(1);
+  try {
+    // 最適な硬貨の組み合わせと手数料の割合を求める
+    const [bestCombination, minFeeRatio] = findOptimalCombination([a, b, c, d, e, f]);
 
-  for (let ai = Math.min(a, 100); ai >= 0; ai--) {
-    for (let bi = Math.min(b, 100 - ai); bi >= 0; bi--) {
-      for (let ci = Math.min(c, Math.max(0, 100 - ai - bi)); ci >= 0; ci--) {
-        for (let di = Math.min(d, Math.max(0, 100 - ai - bi - ci)); di >= 0; di--) {
-          for (let ei = Math.min(e, Math.max(0, 100 - ai - bi - ci - di)); ei >= 0; ei--) {
-            for (let fi = Math.min(f, Math.max(0, 100 - ai - bi - ci - di - ei)); fi >= 0; fi--) {
-              let totalSum = sum(ai, bi, ci, di, ei, fi);
-              let totalCommission = commission(ai, bi, ci, di, ei, fi);
-              let currentPer = per(ai, bi, ci, di, ei, fi, totalSum, totalCommission);
-              
-              if (currentPer < 0.0) continue;
-              
-              if (currentPer < minPer) {
-                minPer = currentPer;
-                arr = [ai, bi, ci, di, ei, fi, totalSum, totalCommission, currentPer];
-              }
-            }
-          }
-        }
-      }
+    // 結果をコンソールに出力
+    console.log("Optimal Coin Combination:", bestCombination);
+    console.log("Minimum Fee Ratio:", minFeeRatio);
+
+    // 最適な組み合わせでの手数料と合計金額を計算
+    const optimalFee = calculateFee(bestCombination);
+    const optimalTotalValue = bestCombination.reduce((acc, val, index) => acc + val * coinValues[index], 0);
+
+    // 最適な組み合わせでの手数料と合計金額もコンソールに出力
+    console.log("Optimal Fee for the Combination:", optimalFee);
+    console.log("Optimal Total Value for the Combination:", optimalTotalValue);
+
+    // エラーレートが100%以上または0未満の場合、エラーステータスを表示
+    if (minFeeRatio > 100.0 || minFeeRatio < 0.0) {
+      displayStatusOnWebPage(-1);
+      return -1;
     }
-  }
 
-  if (minPer > 100.0 || minPer < 0.0) {
-    status(-1);
+    // 結果をHTMLに表示
+    result(bestCombination.concat([optimalTotalValue], [optimalFee], [minFeeRatio * 100.0]));
+
+    // 正常終了のステータスを表示
+    displayStatusOnWebPage(2);
+    return 0;
+
+  } catch (error) {
+    // エラーメッセージをコンソールに出力
+    console.error("Error:", error.message);
+
+    // エラーステータスを表示
+    displayStatusOnWebPage(-1);
     return -1;
   }
-
-  result(arr);
-  status(2);
-  return 0;
 }
