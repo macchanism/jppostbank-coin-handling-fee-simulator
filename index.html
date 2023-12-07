@@ -5,16 +5,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
 <!-- CSS -->
 <link href="spinner_btn.css" rel="stylesheet">
 
 <!-- jQuery -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
 <!-- JS -->
+<script src="js/component.js" charset="utf-8"></script>
 <script src="js/script.js" charset="utf-8"></script>
 <script src="js/spinner_btn.js" charset="utf-8"></script>
 
@@ -24,8 +26,8 @@
 <header class="bg-dark">
   <div class="container-fluid">
     <ul class="nav justify-content-between">
-      <li class="nav-item navbar-brand"><a class="nav-link text-white" href="#">JPostBank CoinHandlingFee Simulator</a></li>
-      <li class="nav-item navbar-brand"><a class="nav-link text-white">レガシー ver.</a></li>
+      <h4 class="nav-item my-1 py-1"><a class="nav-link text-white" href="./index.html">JapanPostBank CoinHandlingFee Simulator</a></h4>
+      <li class="nav-item my-1 py-1"><a class="nav-link disabled text-white">レガシー ver.</div></li>
     </ul>
   </div>
 </header>
@@ -37,14 +39,14 @@
     <div class="col-11">
       <div class="container-fluid">
         <div class="row justify-content-end">
-          <div class="col-12 text-right">
-            <a class="btn btn-link" href="./calculation-api.html">API ver.はこちら</a>
+          <div class="col-12 text-end">
+            <a class="btn btn-link" href="http://jp-bank-coin-handling-fee-sim.matchaism.net/calculation-api.html" role="button">API ver.はこちら (HTTP)</a>
             <p>(APIサーバが生きていたら使えます)</p>
           </div>
         </div>
         <div class="row justify-content-end">
-          <div class="col-12 text-right">
-            <a class="btn btn-link" href="https://github.com/macchanism/jppostbank-coin-handling-fee-simulator/blob/main/README.md">README</a>
+          <div class="col-12 text-end">
+            <a class="btn btn-link" href="https://github.com/macchanism/jppostbank-coin-handling-fee-simulator/blob/main/README.md" role="button">README</a>
           </div>
         </div>
       </div>
@@ -52,256 +54,15 @@
   </div>
 </div>
 
+<script>displayIOConsole("./");</script>
 
-<form class="container my-3">
-  <div class="row justify-content-center">
-    <div class="col-5 text-center">
-      <h3>硬貨 (円)</h3>
-    </div>
-  </div>
-  <div class="row justify-content-center">
-    <div class="col-md-5">
-      <div class="row justify-content-center my-2">
-        <div class="col-2 text-right">
-          <label for="1yen" class="col-form-label">1</label>
-        </div>
-        <div class="col-7 spinner_area">
-          <div class="input-group">
-            <input class="form-control rounded" id="1yen" type="number" data-max="100" data-min="0" value="0">
-            <button class="btn btn-secondary btnspinner mx-1" type="button" data-cal="1" data-target="#1yen">+</button>
-            <button class="btn btn-secondary btnspinner" type="button" data-cal="-1" data-target="#1yen">-</button>
-          </div>
-        </div>
-      </div>
-      <div class="row justify-content-center my-2">
-        <div class="col-2 text-right">
-          <label for="5yen" class="col-form-label">5</label>
-        </div>
-        <div class="col-7 spinner_area">
-          <div class="input-group">
-            <input class="form-control rounded" id="5yen" type="number" data-max="100" data-min="0" value="0">
-            <button class="btn btn-secondary btnspinner mx-1" type="button" data-cal="1" data-target="#5yen">+</button>
-            <button class="btn btn-secondary btnspinner" type="button" data-cal="-1" data-target="#5yen">-</button>
-          </div>
-        </div>
-      </div>
-      <div class="row justify-content-center my-2">
-        <div class="col-2 text-right">
-          <label for="10yen" class="col-form-label">10</label>
-        </div>
-        <div class="col-7 spinner_area">
-          <div class="input-group">
-            <input class="form-control rounded" id="10yen" type="number" data-max="100" data-min="0" value="0">
-            <button class="btn btn-secondary btnspinner mx-1" type="button" data-cal="1" data-target="#10yen">+</button>
-            <button class="btn btn-secondary btnspinner" type="button" data-cal="-1" data-target="#10yen">-</button>
-          </div>
-        </div>
-      </div>
-    </div>
+<script>displayInfo("./");</script>
 
-    <div class="col-md-5">
-      <div class="row justify-content-center my-2">
-        <div class="col-2 text-right">
-          <label for="50yen" class="col-form-label">50</label>
-        </div>
-        <div class="col-7 spinner_area">
-          <div class="input-group">
-            <input class="form-control rounded" id="50yen" type="number" data-max="100" data-min="0" value="0">
-            <button class="btn btn-secondary btnspinner mx-1" type="button" data-cal="1" data-target="#50yen">+</button>
-            <button class="btn btn-secondary btnspinner" type="button" data-cal="-1" data-target="#50yen">-</button>
-          </div>
-        </div>
-      </div>
-      <div class="row justify-content-center my-2">
-        <div class="col-2 text-right">
-          <label for="100yen" class="col-form-label">100</label>
-        </div>
-        <div class="col-7 spinner_area">
-          <div class="input-group">
-            <input class="form-control rounded" id="100yen" type="number" data-max="100" data-min="0" value="0">
-            <button class="btn btn-secondary btnspinner mx-1" type="button" data-cal="1" data-target="#100yen">+</button>
-            <button class="btn btn-secondary btnspinner" type="button" data-cal="-1" data-target="#100yen">-</button>
-          </div>
-        </div>
-      </div>
-      <div class="row justify-content-center my-2">
-        <div class="col-2 text-right">
-          <label for="500yen" class="col-form-label">500</label>
-        </div>
-        <div class="col-7 spinner_area">
-          <div class="input-group">
-            <input class="form-control rounded" id="500yen" type="number" data-max="100" data-min="0" value="0">
-            <button class="btn btn-secondary btnspinner mx-1" type="button" data-cal="1" data-target="#500yen">+</button>
-            <button class="btn btn-secondary btnspinner" type="button" data-cal="-1" data-target="#500yen">-</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</form>
-
-
-<div class="container my-3">
-  <div class="row justify-content-center">
-    <div class="col-6 text-center">
-      <button class="btn btn-primary" type="button" name="button" onclick="main()">Run to simulate</button>
-    </div>
-  </div>
-</div>
-
-
-<div class="container my-3">
-  <div class="row justify-content-center">
-    <div class="col-4 text-center">
-      <div id="log">
-        <p>待機中</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="container my-4">
-  <div class="row justify-content-center my-3">
-    <div class="col-md-3">
-      <table class="table table-sm table-bordered table-striped text-center" style="table-layout: fixed;">
-        <thead>
-          <tr>
-            <th scope="col">硬貨</th>
-            <th scope="col">枚数</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1円</td>
-            <td id="result-1">-</td>
-          </tr>
-          <tr>
-            <td>5円</td>
-            <td id="result-5">-</td>
-          </tr>
-          <tr>
-            <td>10円</td>
-            <td id="result-10">-</td>
-          </tr>
-          <tr>
-            <td>50円</td>
-            <td id="result-50">-</td>
-          </tr>
-          <tr>
-            <td>100円</td>
-            <td id="result-100">-</td>
-          </tr>
-          <tr>
-            <td>500円</td>
-            <td id="result-500">-</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="col-md-6">
-      <table class="table table-sm table-bordered table-striped text-center" style="table-layout: fixed;">
-        <thead>
-          <tr>
-            <th scope="col"></th>
-            <th scope="col">金額(円)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">預払金額</td>
-            <td id="result-input">-</td>
-          </tr>
-          <tr>
-            <th scope="row">硬貨預払料金</td>
-            <td id="result-deposit">-</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table class="table table-sm table-bordered table-striped text-center" style="table-layout: fixed;">
-        <caption class="small">割合=100 * ATM硬貨預払料金 / 預払金額</caption>
-        <thead>
-          <tr>
-            <th scope="col"></th>
-            <th scope="col">百分率(%)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">割合</td>
-            <td id="result-per">-</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-
-<div class="container my-5 border-top border-secondary">
-  <div class="row justify-content-center my-3">
-    <div class="col-sm-8">
-      <h3>ATM硬貨預払料金</h3>
-      <p>ゆうちょ銀行のATMにおける硬貨の預け入れ・払戻しには，ATM硬貨預払料金が発生する．</p>
-      <p>硬貨の投入は100枚まで．硬貨預払料金が投入金額を超えるような操作はできない．</p>
-    </div>
-  </div>
-  <div class="row justify-content-center my-3">
-    <div class="col-sm-4">
-      <p class="lead">預け入れ</p>
-      <table class="table table-sm table-bordered table-striped text-center" style="table-layout: fixed;">
-        <thead>
-          <tr>
-            <th scope="col">硬貨枚数</th>
-            <th scope="col">料金</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1~25枚</td>
-            <td>110円</td>
-          </tr>
-          <tr>
-            <td>26~50枚</td>
-            <td>220円</td>
-          </tr>
-          <tr>
-            <td>51~100枚</td>
-            <td>330円</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="col-sm-4">
-      <p class="lead">払戻し</p>
-      <table class="table table-sm table-bordered table-striped text-center" style="table-layout: fixed;">
-        <thead>
-          <tr>
-            <th scope="col">硬貨枚数</th>
-            <th scope="col">料金</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1枚以上</td>
-            <td>110円</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
 </main>
 
 <footer class="text-center border-top border-secondary mx-4 my-2">
-  <small>Copyright &copy; 抹茶しぐれ (matchasim) All Rights Reserved.</small>
+  <small>Copyend &copy; 抹茶しぐれ (matchasim) All ends Reserved.</small>
 </footer>
-
-<!-- Bootstrap Bundle (includes Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 
 </body>
 </html>

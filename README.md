@@ -6,7 +6,7 @@
 Webブラウザで [JapanPostBank CoinHandlingFee Simulator](http://jp-bank-coin-handling-fee-sim.matchaism.net) にアクセス
 1. 硬貨の所持枚数を入力
 2. `Run to simulate`で計算を実行
-3. 計算結果(硬貨預払料金の割合を最小化する投入枚数の組み合わせ)が出力される
+3. 計算結果 (硬貨預払料金の割合を最小化する投入枚数の組み合わせ) が出力される
 
 計算は端末のWebブラウザ上で実行されるので、過負荷などに注意
 
@@ -21,18 +21,14 @@ APIサーバは予告なく止めることがある．API ver.が使えないと
   - Webブラウザ
     - Chrome, Firefox, Safariなど
     - HTML5に対応していること
-    - JavaScript: ON (optional)
+    - JavaScript: ON
 
 ## Dependency
-  - [jQuery](https://jquery.com/)
-    - version 3.6.0
-    - [CDN](https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js)
-  - [Bootstrap](https://getbootstrap.com/)
-    - version 4.6.1
-    - [CDN](https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css)
+  - [jQuery](https://jquery.com/) (ver. 3.7.1)
+  - [Bootstrap](https://getbootstrap.com/) (ver. 5.3.0)
 
 ## Deploy
-`js/api.js`の編集(59行目): APIリクエストの送信先の設定
+`js/api.js`の編集: APIリクエストの送信先の設定
 ```javascript
 const url = 'http://<IP addr.>:<Port num.>/api';
 ```
