@@ -1,4 +1,5 @@
 // ATM硬貨預払い手数料のシミュレーション
+
 const coinValues = [1, 5, 10, 50, 100, 500];
 
 // 各硬貨の手数料を計算する関数
@@ -131,9 +132,8 @@ function displayStatusOnWebPage(mode) {
 
 // フォームから入力された硬貨の数量に基づいて、最適な組み合わせを見つけ、結果を表示します。結果が正常でない場合、エラーステータスを表示します。
 function main() {
-  const getInputValue = (id) => parseInt(document.getElementById(id).value);
-
   // フォームから入力された硬貨の数量を取得
+  const getInputValue = (id) => parseInt(document.getElementById(id).value);
   let a = getInputValue('1yen');
   let b = getInputValue('5yen');
   let c = getInputValue('10yen');
@@ -141,24 +141,22 @@ function main() {
   let e = getInputValue('100yen');
   let f = getInputValue('500yen');
 
-  // 計算中のステータスを表示
-  displayStatusOnWebPage(1);
-
   try {
+    // 計算中のステータスを表示
+    displayStatusOnWebPage(1);
+
     // 最適な硬貨の組み合わせと手数料の割合を求める
     const [bestCombination, minFeeRatio] = findOptimalCombination([a, b, c, d, e, f]);
 
-    // 結果をコンソールに出力
-    console.log("Optimal Coin Combination:", bestCombination);
-    console.log("Minimum Fee Ratio:", minFeeRatio);
+    //console.log("Optimal Coin Combination:", bestCombination);
+    //console.log("Minimum Fee Ratio:", minFeeRatio);
 
     // 最適な組み合わせでの手数料と合計金額を計算
     const optimalFee = calculateFee(bestCombination);
     const optimalTotalValue = bestCombination.reduce((acc, val, index) => acc + val * coinValues[index], 0);
 
-    // 最適な組み合わせでの手数料と合計金額もコンソールに出力
-    console.log("Optimal Fee for the Combination:", optimalFee);
-    console.log("Optimal Total Value for the Combination:", optimalTotalValue);
+    //console.log("Optimal Fee for the Combination:", optimalFee);
+    //console.log("Optimal Total Value for the Combination:", optimalTotalValue);
 
     // エラーレートが100%以上または0未満の場合、エラーステータスを表示
     if (minFeeRatio > 100.0 || minFeeRatio < 0.0) {
@@ -168,7 +166,6 @@ function main() {
 
     // 結果をHTMLに表示
     result(bestCombination.concat([optimalTotalValue], [optimalFee], [minFeeRatio * 100.0]));
-
     // 正常終了のステータスを表示
     displayStatusOnWebPage(2);
     return 0;
@@ -176,7 +173,6 @@ function main() {
   } catch (error) {
     // エラーメッセージをコンソールに出力
     console.error("Error:", error.message);
-
     // エラーステータスを表示
     displayStatusOnWebPage(-1);
     return -1;

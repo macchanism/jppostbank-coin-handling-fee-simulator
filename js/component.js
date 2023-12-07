@@ -20,13 +20,13 @@ function fetchAndWriteContent(rootDir, componentPath) {
 }
 
 // コンソールコンポーネントを読み込み表示する関数
-function console(rootDir) {
+function displayIOConsole(rootDir) {
   // 共通関数を呼び出してコンソールコンポーネントを読み込む
-  fetchAndWriteContent(rootDir, "component/console.html");
+  fetchAndWriteContent(rootDir, "component/ioconsole.html");
 }
 
 // インフォコンポーネントを読み込み表示する関数
-function info(rootDir) {
+function displayInfo(rootDir) {
   // 共通関数を呼び出してインフォコンポーネントを読み込む
   fetchAndWriteContent(rootDir, "component/info.html");
 }
