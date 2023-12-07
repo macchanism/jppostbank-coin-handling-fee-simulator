@@ -1,36 +1,5 @@
 // ATM硬貨預払い手数料のシミュレーション
 
-// 入力された硬貨の数量に基づいて総額を計算します。もし硬貨の数量が負の値であれば、エラーとして-1を返します。
-function sum(a, b, c, d, e, f) {
-  if (a < 0 || b < 0 || c < 0 || d < 0 || e < 0 || f < 0) {
-    return -1;
-  }
-  return a + 5 * b + 10 * c + 50 * d + 100 * e + 500 * f;
-}
-
-// 入力された硬貨の数量に基づいて、硬貨預払料金を計算します。合計硬貨の数量によって異なる手数料が適用されます。計算結果が-1の場合、エラーとして返します。
-function commission(a, b, c, d, e, f) {
-  let totalCoins = a + b + c + d + e + f;
-  let ret = -1;
-
-  if (totalCoins >= 1 && totalCoins <= 25) {
-    ret = 110;
-  } else if (totalCoins <= 50) {
-    ret = 220;
-  } else if (totalCoins <= 100) {
-    ret = 330;
-  }
-  return ret;
-}
-
-// 入力された硬貨の数量に基づいて、ATM硬貨預払料金の割合を計算します。もし計算結果が負の値であれば、エラーとして-1を返します。
-function per(a, b, c, d, e, f, totalCost, totalCommission) {
-  if (totalCost <= 0 || totalCommission < 0) {
-    return -1;
-  }
-  return (100.0 * totalCommission) / totalCost;
-}
-
 // シミュレーションの結果をHTMLページに表示します。特定のHTML要素に計算結果を表示します。小数点以下5桁まで表示されるように設定されています。
 function result(A) {
   let idArray = [
@@ -81,6 +50,79 @@ function status(mode) {
 	element.innerHTML = '<p>' + nowLog + '</p>';
 }
 
+const coinValues = [1, 5, 10, 50, 100, 500];
+
+function calculateFee(combination) {
+  // 合計硬貨枚数を計算
+  const totalCoins = combination.reduce((acc, val) => acc + val, 0);
+
+  // 手数料の計算
+  if (1 <= totalCoins && totalCoins <= 25) {
+      return 110;
+  } else if (26 <= totalCoins && totalCoins <= 50) {
+      return 220;
+  } else if (51 <= totalCoins && totalCoins <= 100) {
+      return 330;
+  } else {
+      throw new Error("Invalid total coins"); // 100枚を超える場合はエラーを発生させる
+  }
+}
+
+// 組み合わせを生成するヘルパー関数
+function generateCombinationsHelper(query, index, current, result) {
+  if (index === query.length) {
+      result.push([...current]);
+      return;
+  }
+
+  // 各硬貨の組み合わせを再帰的に生成
+  for (let i = 0; i <= query[index]; i++) {
+      current[index] = i;
+      generateCombinationsHelper(query, index + 1, current, result);
+  }
+}
+
+// 組み合わせを生成する関数
+function generateCombinations(query) {
+  const result = [];
+  generateCombinationsHelper(query, 0, [], result);
+  return result;
+}
+
+function findOptimalCombination(query) {
+  //const coinValues = [1, 5, 10, 50, 100, 500];
+
+  let bestCombination = null;
+  let minFeeRatio = Infinity;
+  let maxTotalCoins = 0;
+
+  // 各硬貨の組み合わせを試す
+  const combinations = generateCombinations(query);
+  for (const combination of combinations) {
+      const totalCoins = combination.reduce((acc, val) => acc + val, 0);
+
+      try {
+          const fee = calculateFee(combination);
+
+          const totalValue = combination.reduce((acc, val, index) => acc + val * coinValues[index], 0);
+          const feeRatio = fee / totalValue;
+
+          // 手数料の割合が最小の場合または手数料の割合が同じで合計枚数が最大の場合を更新
+          if (feeRatio < minFeeRatio || (feeRatio === minFeeRatio && maxTotalCoins < totalCoins && totalCoins <= 100)) {
+              minFeeRatio = feeRatio;
+              bestCombination = combination;
+              maxTotalCoins = totalCoins;
+          }
+      } catch (error) {
+          // エラーが発生した場合はスキップ
+          continue;
+      }
+  }
+
+  return [bestCombination, minFeeRatio];
+}
+
+
 // フォームから入力された硬貨の数量に基づいて、最適な組み合わせを見つけ、結果を表示します。結果が正常でない場合、エラーステータスを表示します。
 function main() {
   const getInputValue = (id) => parseInt(document.getElementById(id).value);
@@ -92,40 +134,38 @@ function main() {
   let e = getInputValue('100yen');
   let f = getInputValue('500yen');
 
-  let minPer = 105.0;
-  let arr = Array(9).fill(-1);
-
   status(1);
 
-  for (let ai = Math.min(a, 100); ai >= 0; ai--) {
-    for (let bi = Math.min(b, 100 - ai); bi >= 0; bi--) {
-      for (let ci = Math.min(c, Math.max(0, 100 - ai - bi)); ci >= 0; ci--) {
-        for (let di = Math.min(d, Math.max(0, 100 - ai - bi - ci)); di >= 0; di--) {
-          for (let ei = Math.min(e, Math.max(0, 100 - ai - bi - ci - di)); ei >= 0; ei--) {
-            for (let fi = Math.min(f, Math.max(0, 100 - ai - bi - ci - di - ei)); fi >= 0; fi--) {
-              let totalSum = sum(ai, bi, ci, di, ei, fi);
-              let totalCommission = commission(ai, bi, ci, di, ei, fi);
-              let currentPer = per(ai, bi, ci, di, ei, fi, totalSum, totalCommission);
-              
-              if (currentPer < 0.0) continue;
-              
-              if (currentPer < minPer) {
-                minPer = currentPer;
-                arr = [ai, bi, ci, di, ei, fi, totalSum, totalCommission, currentPer];
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+  try {
+    // 最適な硬貨の組み合わせと手数料の割合を求める
+    const [bestCombination, minFeeRatio] = findOptimalCombination([a, b, c, d, e, f]);
+  
+    // 結果を出力
+    console.log("Optimal Coin Combination:", bestCombination);
+    console.log("Minimum Fee Ratio:", minFeeRatio);
+  
+    // 最適な組み合わせでの手数料と合計金額を計算
+    const optimalFee = calculateFee(bestCombination);
+    const optimalTotalValue = bestCombination.reduce((acc, val, index) => acc + val * coinValues[index], 0);
+  
+    // 最適な組み合わせでの手数料と合計金額も出力
+    console.log("Optimal Fee for the Combination:", optimalFee);
+    console.log("Optimal Total Value for the Combination:", optimalTotalValue);
 
-  if (minPer > 100.0 || minPer < 0.0) {
+
+    if (minFeeRatio > 100.0 || minFeeRatio < 0.0) {
+      status(-1);
+      return -1;
+    }
+  
+    result(bestCombination.concat([optimalTotalValue], [optimalFee], [minFeeRatio * 100.0]));
+    status(2);
+    return 0;
+  
+  } catch (error) {
+    console.error("Error:", error.message);
     status(-1);
     return -1;
   }
 
-  result(arr);
-  status(2);
-  return 0;
 }
