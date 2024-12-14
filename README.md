@@ -22,7 +22,8 @@ Webブラウザで [JapanPostBank CoinHandlingFee Simulator](http://jp-bank-coin
 git clone <this_repository>
 cd <this_repository>
 npm init -y # npmプロジェクトの初期化
-npm install typescript gh-pages --save-dev # TypeScriptをインストール
+npm install @types/node typescript gh-pages --save-dev # node，TypeScriptとgh-pagesをインストール
+npm install jquery @types/jquery --save # jQueryとjQueryの型定義ファイルをインストール
 npx tsc --init # TypeScriptの設定ファイルを生成
 # package.json, tsconfig.jsonを編集
 npm install -g http-server  # or npm install -g serve
