@@ -36,19 +36,6 @@ npm run build # ビルド
 http-server build # サーバ起動
 ```
 
-## Requirement
-
-- PC，スマートフォン，タブレットなど
-- Webブラウザ
-  - Chrome, Firefox, Safariなど
-  - HTML5に対応していること
-  - JavaScript: ON
-
-## Dependency
-
-- [jQuery](https://jquery.com/) (ver. 3.7.1)
-- [Bootstrap](https://getbootstrap.com/) (ver. 5.3.0)
-
 ## License
 
 MIT License
