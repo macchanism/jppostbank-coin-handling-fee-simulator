@@ -38,7 +38,7 @@
       <div class="container-fluid">
         <div class="row justify-content-end">
           <div class="col-12 text-end">
-            <a class="btn btn-link" href="https://github.com/matchaism/jppostbank-coin-handling-fee-simulator/blob/main/README.md" role="button">README</a>
+            <a class="btn btn-link" href="https://github.com/matchaism/jpbank-coin-handling-fee-simulator" role="button">Repository & README</a>
           </div>
         </div>
       </div>
@@ -68,7 +68,7 @@
         </div>
         <div class="col-7 spinner_area">
           <div class="input-group">
-            <input class="form-control rounded" id="1yen" type="number" data-max="100" data-min="0" value="0" />
+            <input class="form-control rounded" id="1yen" type="number" data-max="100" data-min="0" value="0" readonly />
             <div class="btn-group ms-1" role="group" aria-label="plusminus">
               <button type="button" class="btn btn-secondary btnspinner me-1" data-target="#1yen" data-cal="1">+</button>
               <button type="button" class="btn btn-secondary btnspinner" data-target="#1yen" data-cal="-1">-</button>
@@ -82,7 +82,7 @@
         </div>
         <div class="col-7 spinner_area">
           <div class="input-group">
-            <input class="form-control rounded" id="5yen" type="number" data-max="100" data-min="0" value="0" />
+            <input class="form-control rounded" id="5yen" type="number" data-max="100" data-min="0" value="0" readonly />
             <div class="btn-group ms-1" role="group" aria-label="plusminus">
               <button type="button" class="btn btn-secondary btnspinner me-1" data-target="#5yen" data-cal="1">+</button>
               <button type="button" class="btn btn-secondary btnspinner" data-target="#5yen" data-cal="-1">-</button>
@@ -96,7 +96,7 @@
         </div>
         <div class="col-7 spinner_area">
           <div class="input-group">
-            <input class="form-control rounded" id="10yen" type="number" data-max="100" data-min="0" value="0" />
+            <input class="form-control rounded" id="10yen" type="number" data-max="100" data-min="0" value="0" readonly />
             <div class="btn-group ms-1" role="group" aria-label="plusminus">
               <button type="button" class="btn btn-secondary btnspinner me-1" data-target="#10yen" data-cal="1">+</button>
               <button type="button" class="btn btn-secondary btnspinner" data-target="#10yen" data-cal="-1">-</button>
@@ -113,7 +113,7 @@
         </div>
         <div class="col-7 spinner_area">
           <div class="input-group">
-            <input class="form-control rounded" id="50yen" type="number" data-max="100" data-min="0" value="0" />
+            <input class="form-control rounded" id="50yen" type="number" data-max="100" data-min="0" value="0" readonly />
             <div class="btn-group ms-1" role="group" aria-label="plusminus">
               <button type="button" class="btn btn-secondary btnspinner me-1" data-target="#50yen" data-cal="1">+</button>
               <button type="button" class="btn btn-secondary btnspinner" data-target="#50yen" data-cal="-1">-</button>
@@ -127,7 +127,7 @@
         </div>
         <div class="col-7 spinner_area">
           <div class="input-group">
-            <input class="form-control rounded" id="100yen" type="number" data-max="100" data-min="0" value="0" />
+            <input class="form-control rounded" id="100yen" type="number" data-max="100" data-min="0" value="0" readonly />
             <div class="btn-group ms-1" role="group" aria-label="plusminus">
               <button type="button" class="btn btn-secondary btnspinner me-1" data-target="#100yen" data-cal="1">+</button>
               <button type="button" class="btn btn-secondary btnspinner" data-target="#100yen" data-cal="-1">-</button>
@@ -141,7 +141,7 @@
         </div>
         <div class="col-7 spinner_area">
           <div class="input-group">
-            <input class="form-control rounded" id="500yen" type="number" data-max="100" data-min="0" value="0" />
+            <input class="form-control rounded" id="500yen" type="number" data-max="100" data-min="0" value="0" readonly />
             <div class="btn-group ms-1" role="group" aria-label="plusminus">
               <button type="button" class="btn btn-secondary btnspinner me-1" data-target="#500yen" data-cal="1">+</button>
               <button type="button" class="btn btn-secondary btnspinner" data-target="#500yen" data-cal="-1">-</button>
@@ -295,13 +295,13 @@
   </div>
 
   <div class="row justify-content-center my-3">
-    <div class="col-sm-8">
-      <p>ゆうちょ銀行のATMにおける硬貨の預け入れ・払戻しには，ATM硬貨預払料金が発生する．</p>
-      <p>硬貨の投入は100枚まで．硬貨預払料金が投入金額を超えるような操作はできない．</p>
-      <p>硬貨の枚数の合算はなく，一回の手続きごとに料金が発生する．</p>
-      <p>預け入れ・払戻し以外の手続き(送金など)では料金は発生しない．</p>
-      <p>窓口では料金形態を含め，扱いがATMの場合と異なる．</p>
-    </div>
+    <ul class="col-sm-8">
+      <li>ゆうちょ銀行のATMにおける硬貨の預け入れ・払戻しには，ATM硬貨預払料金が発生する．</li>
+      <li>硬貨の投入は100枚まで．硬貨預払料金が投入金額を超えるような操作はできない．</li>
+      <li>硬貨の枚数の合算はなく，一回の手続きごとに料金が発生する．</li>
+      <li>預け入れ・払戻し以外の手続き(送金など)では料金は発生しない．</li>
+      <li>窓口では料金形態を含め，扱いがATMの場合と異なる．</li>
+    </ul>
   </div>
 </div>
 
